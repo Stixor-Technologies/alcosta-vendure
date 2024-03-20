@@ -24,6 +24,8 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@vendure/cli": "^2.1.8",
+    "@vendure/ui-devkit": "^2.1.8",
     "concurrently": "8.2.2",
     "ts-node": "10.9.2"
   }
