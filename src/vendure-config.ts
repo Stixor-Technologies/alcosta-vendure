@@ -122,9 +122,15 @@ export const config: VendureConfig = {
         ],
         devMode: false,
       }),
-      adminUiConfig: {
-        apiPort: 3000,
-      },
+      adminUiConfig: IS_DEV
+        ? {
+            apiPort: 3000,
+          }
+        : {
+            apiPort: 443, // HTTPS port
+            apiHost: "alcosta.stixor.com",
+            adminApiPath: "admin-api", // Ensure this matches your Vendure config
+          },
     }),
   ],
 };
