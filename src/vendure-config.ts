@@ -120,7 +120,7 @@ export const config: VendureConfig = {
             providers: ["providers.ts"],
           },
         ],
-        devMode: true,
+        devMode: false,
       }),
       adminUiConfig: {
         apiHost: "auto",
