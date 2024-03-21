@@ -104,7 +104,6 @@ export const config: VendureConfig = {
     AdminUiPlugin.init({
       route: "admin",
       port: 3002,
-      hostname: "any",
 
       app: compileUiExtensions({
         outputPath: path.join(__dirname, "../admin-ui"),
@@ -124,8 +123,6 @@ export const config: VendureConfig = {
         devMode: false,
       }),
       adminUiConfig: {
-        apiHost: "auto",
-
         apiPort: 3000,
       },
     }),
