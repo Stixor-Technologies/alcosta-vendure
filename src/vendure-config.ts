@@ -24,6 +24,7 @@ export const config: VendureConfig = {
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
+
     // The following options are useful in development mode,
     // but are best turned off for production for security
     // reasons.
@@ -112,7 +113,7 @@ export const config: VendureConfig = {
       port: 3002,
 
       app: compileUiExtensions({
-        outputPath: path.join(__dirname, "../admin-ui"),
+        outputPath: path.join(__dirname, "..", "admin-ui"),
         extensions: [
           {
             id: "banner",
@@ -134,7 +135,7 @@ export const config: VendureConfig = {
           }
         : {
             apiPort: 443, // HTTPS port
-            apiHost: "alcosta.stixor.com",
+            apiHost: "https://alcosta.stixor.com",
 
             adminApiPath: "admin-api", // Ensure this matches your Vendure config
           },
