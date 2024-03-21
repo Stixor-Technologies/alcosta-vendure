@@ -15,6 +15,12 @@ const IS_DEV = process.env.APP_ENV === "dev";
 
 export const config: VendureConfig = {
   apiOptions: {
+    cors: {
+      origin: "*",
+      credentials: true, // Allows cookies and credentials to be sent along with requests
+      allowedHeaders: "*", // Customize which headers can be sent to the API
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Customize which HTTP methods are allowed
+    },
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
@@ -129,6 +135,7 @@ export const config: VendureConfig = {
         : {
             apiPort: 443, // HTTPS port
             apiHost: "alcosta.stixor.com",
+
             adminApiPath: "admin-api", // Ensure this matches your Vendure config
           },
     }),
