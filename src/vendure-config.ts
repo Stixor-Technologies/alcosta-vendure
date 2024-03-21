@@ -109,7 +109,12 @@ export const config: VendureConfig = {
         extensions: [
           {
             id: "banner",
-            extensionPath: path.join(__dirname, "plugins/banner-image/ui"),
+            extensionPath: path.join(
+              __dirname,
+              "..",
+              "src",
+              "plugins/banner-image/ui"
+            ),
             routes: [{ route: "banner", filePath: "routes.ts" }],
             providers: ["providers.ts"],
           },
