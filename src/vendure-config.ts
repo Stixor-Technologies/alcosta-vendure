@@ -5,7 +5,10 @@ import {
   VendureConfig,
 } from "@vendure/core";
 import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
-import { AssetServerPlugin } from "@vendure/asset-server-plugin";
+import {
+  AssetServerPlugin,
+  configureS3AssetStorage,
+} from "@vendure/asset-server-plugin";
 import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
 import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import "dotenv/config";
@@ -89,6 +92,21 @@ export const config: VendureConfig = {
       // be guessed correctly, but for production it will usually need
       // to be set manually to match your production url.
       // assetUrlPrefix: IS_DEV ? undefined : "https://alcosta.stixor.com/assets/",
+      storageStrategyFactory: process.env.MINIO_ENDPOINT
+        ? configureS3AssetStorage({
+            bucket: "alcosta-assets",
+            credentials: {
+              accessKeyId: process.env.MINIO_ACCESS_KEY ?? "",
+              secretAccessKey: process.env.MINIO_SECRET_KEY ?? "",
+            },
+            nativeS3Configuration: {
+              endpoint: process.env.MINIO_ENDPOINT,
+              forcePathStyle: true,
+              signatureVersion: "v4",
+              region: "eu-west-1",
+            },
+          })
+        : undefined,
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
