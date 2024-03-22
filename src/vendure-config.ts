@@ -84,11 +84,11 @@ export const config: VendureConfig = {
   plugins: [
     AssetServerPlugin.init({
       route: "assets",
-      assetUploadDir: path.join(__dirname, "../static/assets"),
+      assetUploadDir: path.join(__dirname, "..", "static", "assets"),
       // For local dev, the correct value for assetUrlPrefix should
       // be guessed correctly, but for production it will usually need
       // to be set manually to match your production url.
-      assetUrlPrefix: IS_DEV ? undefined : "https://alcosta.stixor.com/assets/",
+      // assetUrlPrefix: IS_DEV ? undefined : "https://alcosta.stixor.com/assets/",
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
