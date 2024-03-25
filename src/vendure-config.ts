@@ -20,17 +20,14 @@ export const config: VendureConfig = {
   apiOptions: {
     cors: {
       origin: "*",
-      credentials: true, // Allows cookies and credentials to be sent along with requests
-      allowedHeaders: "*", // Customize which headers can be sent to the API
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Customize which HTTP methods are allowed
+      credentials: true,
+      allowedHeaders: "*",
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
 
-    // The following options are useful in development mode,
-    // but are best turned off for production for security
-    // reasons.
     ...(IS_DEV
       ? {
           adminApiPlayground: {
@@ -90,24 +87,23 @@ export const config: VendureConfig = {
       assetUploadDir:
         process.env.ASSET_UPLOAD_DIR ||
         path.join(__dirname, "../static/assets"),
-      // For local dev, the correct value for assetUrlPrefix should
-      // be guessed correctly, but for production it will usually need
-      // to be set manually to match your production url.
-      // assetUrlPrefix: IS_DEV ? undefined : "https://alcosta.stixor.com/assets/",
-      storageStrategyFactory: process.env.MINIO_ENDPOINT
-        ? configureS3AssetStorage({
-            bucket: "alcosta-assets",
-            credentials: {
-              accessKeyId: process.env.MINIO_ACCESS_KEY ?? "",
-              secretAccessKey: process.env.MINIO_SECRET_KEY ?? "",
-            },
-            nativeS3Configuration: {
-              endpoint: process.env.MINIO_ENDPOINT,
-              forcePathStyle: true,
-              signatureVersion: "v4",
-              region: "eu-west-1",
-            },
-          })
+      assetUrlPrefix: IS_DEV ? undefined : process.env.MINIO_ENDPOINT,
+      storageStrategyFactory: !IS_DEV
+        ? process.env.MINIO_ENDPOINT
+          ? configureS3AssetStorage({
+              bucket: "alcosta-assets",
+              credentials: {
+                accessKeyId: process.env.MINIO_ACCESS_KEY ?? "",
+                secretAccessKey: process.env.MINIO_SECRET_KEY ?? "",
+              },
+              nativeS3Configuration: {
+                endpoint: process.env.MINIO_ENDPOINT,
+                forcePathStyle: true,
+                signatureVersion: "v4",
+                region: "eu-west-1",
+              },
+            })
+          : undefined
         : undefined,
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
@@ -119,8 +115,6 @@ export const config: VendureConfig = {
       handlers: defaultEmailHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
       globalTemplateVars: {
-        // The following variables will change depending on your storefront implementation.
-        // Here we are assuming a storefront running at http://localhost:8080.
         fromAddress: '"example" <noreply@example.com>',
         verifyEmailAddressUrl: "http://localhost:8080/verify",
         passwordResetUrl: "http://localhost:8080/password-reset",
@@ -157,7 +151,7 @@ export const config: VendureConfig = {
             apiPort: 443, // HTTPS port
             apiHost: "https://alcosta.stixor.com",
 
-            adminApiPath: "admin-api", // Ensure this matches your Vendure config
+            adminApiPath: "admin-api",
           },
     }),
   ],
