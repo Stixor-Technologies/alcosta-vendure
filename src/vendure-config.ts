@@ -72,19 +72,19 @@ export const config: VendureConfig = {
   customFields: {
     Product: [
       {
-        name: "brand",
+        name: "Brand",
         type: "string",
         ui: { component: "text-form-input" },
         defaultValue: "",
       },
       {
-        name: "additionalInformation",
+        name: "Additional Information",
         type: "string",
         ui: { component: "text-form-input" },
         defaultValue: "",
       },
       {
-        name: "productDetail",
+        name: "Product Detail",
         type: "string",
         ui: { component: "text-form-input" },
         defaultValue: "",
