@@ -1,9 +1,11 @@
 import {
   dummyPaymentHandler,
   DefaultJobQueuePlugin,
-  DefaultSearchPlugin,
   VendureConfig,
+  DefaultSearchPlugin,
 } from "@vendure/core";
+import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
+
 import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
 import {
   AssetServerPlugin,
@@ -53,8 +55,6 @@ export const config: VendureConfig = {
   },
   dbConnectionOptions: {
     type: "postgres",
-    // See the README.md "Migrations" section for an explanation of
-    // the `synchronize` and `migrations` options.
     synchronize: false,
     migrations: [path.join(__dirname, "./migrations/*.+(js|ts)")],
     logging: false,
@@ -69,12 +69,22 @@ export const config: VendureConfig = {
   paymentOptions: {
     paymentMethodHandlers: [dummyPaymentHandler],
   },
-  // When adding or altering custom field definitions, the database will
-  // need to be updated. See the "Migrations" section in README.md.
   customFields: {
     Product: [
       {
         name: "brand",
+        type: "string",
+        ui: { component: "text-form-input" },
+        defaultValue: "",
+      },
+      {
+        name: "additionalInformation",
+        type: "string",
+        ui: { component: "text-form-input" },
+        defaultValue: "",
+      },
+      {
+        name: "productDetail",
         type: "string",
         ui: { component: "text-form-input" },
         defaultValue: "",
@@ -84,9 +94,10 @@ export const config: VendureConfig = {
   plugins: [
     AssetServerPlugin.init({
       route: "assets",
-      assetUploadDir:
-        process.env.ASSET_UPLOAD_DIR ||
-        path.join(__dirname, "../static/assets"),
+      assetUploadDir: !IS_DEV
+        ? process.env.ASSET_UPLOAD_DIR ||
+          path.join(__dirname, "../static/assets")
+        : path.join(__dirname, "../static/assets"),
       assetUrlPrefix: IS_DEV ? undefined : process.env.MINIO_ENDPOINT,
       storageStrategyFactory: !IS_DEV
         ? process.env.MINIO_ENDPOINT
@@ -107,7 +118,7 @@ export const config: VendureConfig = {
         : undefined,
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
-    DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: true }),
+    DefaultSearchPlugin.init({ bufferUpdates: false }),
     EmailPlugin.init({
       devMode: true,
       outputPath: path.join(__dirname, "../static/email/test-emails"),
@@ -141,7 +152,7 @@ export const config: VendureConfig = {
             providers: ["providers.ts"],
           },
         ],
-        devMode: false,
+        devMode: IS_DEV,
       }),
       adminUiConfig: IS_DEV
         ? {

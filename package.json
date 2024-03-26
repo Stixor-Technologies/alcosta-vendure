@@ -17,9 +17,11 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",
     "@aws-sdk/lib-storage": "^3.537.0",
+    "@elastic/elasticsearch": "^8.12.2",
     "@vendure/admin-ui-plugin": "2.1.8",
     "@vendure/asset-server-plugin": "2.1.8",
-    "@vendure/core": "2.1.8",
+    "@vendure/core": "^2.1.8",
+    "@vendure/elasticsearch-plugin": "^2.1.8",
     "@vendure/email-plugin": "2.1.8",
     "dotenv": "16.4.5",
     "pg": "8.11.3",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@vendure/cli": "^2.1.8",
+    "@vendure/common": "^2.1.8",
     "@vendure/ui-devkit": "^2.1.8",
     "concurrently": "8.2.2",
     "ts-node": "10.9.2"
