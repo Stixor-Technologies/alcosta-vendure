@@ -3,6 +3,7 @@ import {
   DefaultJobQueuePlugin,
   VendureConfig,
   DefaultSearchPlugin,
+  LanguageCode,
 } from "@vendure/core";
 import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 
@@ -72,21 +73,26 @@ export const config: VendureConfig = {
   customFields: {
     Product: [
       {
-        name: "Brand",
+        name: "brand",
         type: "string",
         ui: { component: "text-form-input" },
+        label: [{ languageCode: LanguageCode.en, value: "Brand" }],
         defaultValue: "",
       },
       {
-        name: "Additional Information",
+        name: "additionalInformation",
         type: "string",
-        ui: { component: "text-form-input" },
+        ui: { component: "textarea-form-input" },
+        label: [
+          { languageCode: LanguageCode.en, value: "Additional Information" },
+        ],
         defaultValue: "",
       },
       {
-        name: "Product Detail",
+        name: "productDetails",
         type: "string",
-        ui: { component: "text-form-input" },
+        ui: { component: "rich-text-form-input" },
+        label: [{ languageCode: LanguageCode.en, value: "Product Details" }],
         defaultValue: "",
       },
     ],
