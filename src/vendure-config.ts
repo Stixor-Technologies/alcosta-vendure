@@ -114,7 +114,7 @@ export const config: VendureConfig = {
                 secretAccessKey: process.env.MINIO_SECRET_KEY ?? "",
               },
               nativeS3Configuration: {
-                endpoint: process.env.MINIO_ENDPOINT,
+                endpoint: process.env.ASSET_UPLOAD_DIR,
                 forcePathStyle: true,
                 signatureVersion: "v4",
                 region: "eu-west-1",
