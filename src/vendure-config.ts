@@ -104,9 +104,9 @@ export const config: VendureConfig = {
         ? process.env.ASSET_UPLOAD_DIR ||
           path.join(__dirname, "../static/assets")
         : path.join(__dirname, "../static/assets"),
-      assetUrlPrefix: IS_DEV ? undefined : process.env.MINIO_ENDPOINT,
+      assetUrlPrefix: IS_DEV ? undefined : process.env.ASSET_UPLOAD_DIR,
       storageStrategyFactory: !IS_DEV
-        ? process.env.MINIO_ENDPOINT
+        ? process.env.ASSET_UPLOAD_DIR
           ? configureS3AssetStorage({
               bucket: "alcosta-assets",
               credentials: {
