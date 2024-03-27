@@ -86,12 +86,15 @@ export const config: VendureConfig = {
         label: [
           { languageCode: LanguageCode.en, value: "Additional Information" },
         ],
+        length: 2000,
         defaultValue: "",
       },
       {
         name: "productDetails",
         type: "string",
         ui: { component: "rich-text-form-input" },
+
+        length: 2000,
         label: [{ languageCode: LanguageCode.en, value: "Product Details" }],
         defaultValue: "",
       },
