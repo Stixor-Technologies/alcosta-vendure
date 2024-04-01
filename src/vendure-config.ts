@@ -5,8 +5,6 @@ import {
   DefaultSearchPlugin,
   LanguageCode,
 } from "@vendure/core";
-import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
-
 import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
 import {
   AssetServerPlugin,
@@ -148,19 +146,7 @@ export const config: VendureConfig = {
 
       app: compileUiExtensions({
         outputPath: path.join(__dirname, "..", "admin-ui"),
-        extensions: [
-          {
-            id: "banner",
-            extensionPath: path.join(
-              __dirname,
-              "..",
-              "src",
-              "plugins/banner-image/ui"
-            ),
-            routes: [{ route: "banner", filePath: "routes.ts" }],
-            providers: ["providers.ts"],
-          },
-        ],
+        extensions: [],
         devMode: IS_DEV,
       }),
       adminUiConfig: IS_DEV
