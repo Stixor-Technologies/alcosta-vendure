@@ -44,6 +44,7 @@ export const config: VendureConfig = {
   },
   authOptions: {
     tokenMethod: ["bearer", "cookie"],
+    requireVerification: false,
     superadminCredentials: {
       identifier: process.env.SUPERADMIN_USERNAME,
       password: process.env.SUPERADMIN_PASSWORD,
@@ -95,6 +96,17 @@ export const config: VendureConfig = {
         length: 2000,
         label: [{ languageCode: LanguageCode.en, value: "Product Details" }],
         defaultValue: "",
+      },
+    ],
+    ProductVariant: [
+      {
+        name: "discount",
+        type: "float",
+        ui: { component: "number-form-input", suffix: "%" },
+        label: [{ languageCode: LanguageCode.en, value: "Discount" }],
+        defaultValue: 0,
+        min: 0,
+        max: 100,
       },
     ],
   },
