@@ -25,7 +25,7 @@ export const config: VendureConfig = {
         "https://develop.djoxd2hz2b5tf.amplifyapp.com",
       ],
       credentials: true,
-      allowedHeaders: "*",
+      allowedHeaders: ["Content-Type"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
 
