@@ -20,11 +20,21 @@ const IS_DEV = process.env.APP_ENV === "dev";
 export const config: VendureConfig = {
   apiOptions: {
     cors: {
-      origin: "*",
+      origin: [
+        "http://localhost:3000",
+        "https://develop.djoxd2hz2b5tf.amplifyapp.com",
+      ],
       credentials: true,
       allowedHeaders: "*",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
+
+    // cors: {
+    //   origin: "*",
+    //   credentials: true,
+    //   allowedHeaders: "*",
+    //   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    // },
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
