@@ -5,7 +5,12 @@ import {
   DefaultSearchPlugin,
   LanguageCode,
 } from "@vendure/core";
-import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
+import {
+  defaultEmailHandlers,
+  EmailDetails,
+  EmailPlugin,
+  EmailSender,
+} from "@vendure/email-plugin";
 import {
   AssetServerPlugin,
   configureS3AssetStorage,
@@ -14,8 +19,22 @@ import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
 import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import "dotenv/config";
 import path from "path";
+import sendgrid from "@sendgrid/mail";
 
 const IS_DEV = process.env.APP_ENV === "dev";
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
+
+class SendgridEmailSender implements EmailSender {
+  async send(email: EmailDetails) {
+    await sendgrid.send({
+      to: email.recipient,
+      from: email.from,
+      subject: email.subject,
+      html: email.body,
+    });
+  }
+}
 
 export const config: VendureConfig = {
   apiOptions: {
@@ -148,20 +167,38 @@ export const config: VendureConfig = {
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false }),
+
+    // TODO: might be used later
+
+    // EmailPlugin.init({
+    //   devMode: true,
+    //   outputPath: path.join(__dirname, "../static/email/test-emails"),
+    //   route: "mailbox",
+    //   handlers: defaultEmailHandlers,
+    //   templatePath: path.join(__dirname, "../static/email/templates"),
+    //   globalTemplateVars: {
+    //     fromAddress: '"Vendure Demo Store" <fawad.mehmood@stixor.com>',
+    //     verifyEmailAddressUrl: "http://localhost:3000/verify",
+    //     passwordResetUrl: "http://localhost:3000/password-reset",
+    //     changeEmailAddressUrl:
+    //       "http://localhost:3000/verify-email-address-change",
+    //   },
+    // }),
+
     EmailPlugin.init({
-      devMode: true,
-      outputPath: path.join(__dirname, "../static/email/test-emails"),
-      route: "mailbox",
       handlers: defaultEmailHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
+      transport: { type: "none" },
       globalTemplateVars: {
-        fromAddress: '"Vendure Demo Store" <fawad.mehmood@stixor.com>',
-        verifyEmailAddressUrl: "http://localhost:3000/verify",
-        passwordResetUrl: "http://localhost:3000/password-reset",
-        changeEmailAddressUrl:
-          "http://localhost:3000/verify-email-address-change",
+        fromAddress: "Alcosta Shop <fawad.mehmood@stixor.com>",
+        verifyEmailAddressUrl: `${process.env.SHOP_URL}/verify`,
+        passwordResetUrl: `${process.env.SHOP_URL}/password-reset`,
+        changeEmailAddressUrl: `${process.env.SHOP_URL}/verify-email-address-change`,
       },
+
+      emailSender: new SendgridEmailSender(),
     }),
+
     AdminUiPlugin.init({
       route: "admin",
       port: 3002,
