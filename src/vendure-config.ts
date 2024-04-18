@@ -155,10 +155,14 @@ export const config: VendureConfig = {
       handlers: defaultEmailHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
       globalTemplateVars: {
-        fromAddress: '"example" <noreply@example.com>',
-        verifyEmailAddressUrl: "http://localhost:8080/verify",
-        passwordResetUrl: "http://localhost:8080/password-reset",
+        fromAddress: '"Alcosta Store" <fawad.mehmood@stixor.com>',
+        verifyEmailAddressUrl:
+          `${process.env.BACKEND_URL}/verify` ?? "http://localhost:8080/verify",
+        passwordResetUrl:
+          `${process.env.BACKEND_URL}/password-reset` ??
+          "http://localhost:8080/password-reset",
         changeEmailAddressUrl:
+          `${process.env.BACKEND_URL}/verify-email-address-change` ??
           "http://localhost:8080/verify-email-address-change",
       },
     }),
