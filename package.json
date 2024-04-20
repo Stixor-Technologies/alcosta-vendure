@@ -36,5 +36,8 @@
     "@vendure/ui-devkit": "^2.1.8",
     "concurrently": "8.2.2",
     "ts-node": "10.9.2"
+  },
+  "resolutions": {
+    "@types/mime": "3.0.4"
   }
 }

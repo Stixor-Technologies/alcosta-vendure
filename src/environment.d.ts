@@ -16,6 +16,7 @@ declare global {
       DB_PASSWORD: string;
       DB_SCHEMA: string;
       DB_CONNECTION: string;
+      DB_CA_CERT: string;
       ASSET_UPLOAD_DIR: string;
       MINIO_ACCESS_KEY: string;
       MINIO_SECRET_KEY: string;

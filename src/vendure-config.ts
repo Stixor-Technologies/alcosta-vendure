@@ -20,6 +20,7 @@ import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import "dotenv/config";
 import path from "path";
 import sendgrid from "@sendgrid/mail";
+import fs from "fs";
 
 const IS_DEV = process.env.APP_ENV === "dev";
 
@@ -88,13 +89,16 @@ export const config: VendureConfig = {
     synchronize: false,
     migrations: [path.join(__dirname, "./migrations/*.+(js|ts)")],
     logging: false,
-    database: process.env.DB_NAME,
-    schema: process.env.DB_SCHEMA,
-    host: process.env.DB_HOST,
-    port: +process.env.DB_PORT,
-    // url: process.env.DB_CONNECTION,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    // database: process.env.DB_NAME,
+    // schema: process.env.DB_SCHEMA,
+    // host: process.env.DB_HOST,
+    // port: +process.env.DB_PORT,
+    url: process.env.DB_CONNECTION,
+    // username: process.env.DB_USERNAME,
+    // password: process.env.DB_PASSWORD,
+    ssl: {
+      ca: fs.readFileSync("./ca-certificate.crt").toString(),
+    },
   },
   paymentOptions: {
     paymentMethodHandlers: [dummyPaymentHandler],
