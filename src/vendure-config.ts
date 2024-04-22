@@ -44,6 +44,7 @@ export const config: VendureConfig = {
         "http://localhost:3000",
         "https://develop.djoxd2hz2b5tf.amplifyapp.com",
         "https://feature-payment-gateway-finalization.djoxd2hz2b5tf.amplifyapp.com",
+        "https://feature-payment.djoxd2hz2b5tf.amplifyapp.com/",
       ],
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
