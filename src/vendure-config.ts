@@ -21,6 +21,7 @@ import "dotenv/config";
 import path from "path";
 import sendgrid from "@sendgrid/mail";
 import fs from "fs";
+// import { AlertPlugin } from "./plugins/alerts/alert.plugin";
 
 const IS_DEV = process.env.APP_ENV === "dev";
 
@@ -90,16 +91,19 @@ export const config: VendureConfig = {
     synchronize: false,
     migrations: [path.join(__dirname, "./migrations/*.+(js|ts)")],
     logging: false,
-    // database: process.env.DB_NAME,
-    // schema: process.env.DB_SCHEMA,
-    // host: process.env.DB_HOST,
-    // port: +process.env.DB_PORT,
-    url: process.env.DB_CONNECTION,
-    // username: process.env.DB_USERNAME,
-    // password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    schema: process.env.DB_SCHEMA,
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    // url: process.env.DB_CONNECTION,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
     ssl: {
-      ca: fs.readFileSync("./ca-certificate.crt").toString(),
+      rejectUnauthorized: false,
     },
+    // ssl: {
+    //   ca: fs.readFileSync("./ca-certificate.crt").toString(),
+    // },
   },
   paymentOptions: {
     paymentMethodHandlers: [dummyPaymentHandler],
@@ -146,6 +150,7 @@ export const config: VendureConfig = {
     ],
   },
   plugins: [
+    // AlertPlugin,
     AssetServerPlugin.init({
       route: "assets",
       assetUploadDir: !IS_DEV
@@ -209,21 +214,21 @@ export const config: VendureConfig = {
       route: "admin",
       port: 3002,
 
-      app: compileUiExtensions({
-        outputPath: path.join(__dirname, "..", "admin-ui"),
-        extensions: [],
-        devMode: IS_DEV,
-      }),
-      adminUiConfig: IS_DEV
-        ? {
-            apiPort: 3000,
-          }
-        : {
-            apiPort: 443, // HTTPS port
-            apiHost: "https://alcosta.stixor.com",
+      // app: compileUiExtensions({
+      //   outputPath: path.join(__dirname, "..", "admin-ui"),
+      //   extensions: [],
+      //   devMode: IS_DEV,
+      // }),
+      adminUiConfig: { apiPort: 3000 },
+      // ? {
+      //     apiPort: 3000,
+      //   }
+      // : {
+      //     apiPort: 443, // HTTPS port
+      //     apiHost: "https://alcosta.stixor.com",
 
-            adminApiPath: "admin-api",
-          },
+      //     adminApiPath: "admin-api",
+      //   },
     }),
   ],
 };
