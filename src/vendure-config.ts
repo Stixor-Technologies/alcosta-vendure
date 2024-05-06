@@ -201,7 +201,7 @@ export const config: VendureConfig = {
       templatePath: path.join(__dirname, "../static/email/templates"),
       transport: { type: "none" },
       globalTemplateVars: {
-        fromAddress: "Alcosta Shop <fawad.mehmood@stixor.com>",
+        fromAddress: `Alcosta Shop <${process.env.EMAIL_FROM}>`,
         verifyEmailAddressUrl: `${process.env.SHOP_URL}/verify`,
         passwordResetUrl: `${process.env.SHOP_URL}/password-reset`,
         changeEmailAddressUrl: `${process.env.SHOP_URL}/verify-email-address-change`,
