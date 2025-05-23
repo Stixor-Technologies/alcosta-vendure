@@ -21,12 +21,10 @@ import "dotenv/config";
 import path from "path";
 import sendgrid from "@sendgrid/mail";
 import fs from "fs";
-// import { AlertPlugin } from "./plugins/alerts/alert.plugin";
 
 const IS_DEV = process.env.APP_ENV === "dev";
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
-
 class SendgridEmailSender implements EmailSender {
   async send(email: EmailDetails) {
     await sendgrid.send({
@@ -37,7 +35,6 @@ class SendgridEmailSender implements EmailSender {
     });
   }
 }
-
 export const config: VendureConfig = {
   apiOptions: {
     cors: {
@@ -51,7 +48,6 @@ export const config: VendureConfig = {
       allowedHeaders: ["Content-Type", "Authorization"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
-
     // cors: {
     //   origin: "*",
     //   credentials: true,
@@ -61,7 +57,6 @@ export const config: VendureConfig = {
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
-
     ...(IS_DEV
       ? {
           adminApiPlayground: {
@@ -91,19 +86,17 @@ export const config: VendureConfig = {
     synchronize: false,
     migrations: [path.join(__dirname, "./migrations/*.+(js|ts)")],
     logging: false,
-    database: process.env.DB_NAME,
-    schema: process.env.DB_SCHEMA,
-    host: process.env.DB_HOST,
-    port: +process.env.DB_PORT,
-    // url: process.env.DB_CONNECTION,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    // database: process.env.DB_NAME,
+    // schema: process.env.DB_SCHEMA,
+    // host: process.env.DB_HOST,
+    // port: +process.env.DB_PORT,
+    url: process.env.DB_CONNECTION,
+    // username: process.env.DB_USERNAME,
+    // password: process.env.DB_PASSWORD,
     // ssl: {
     //   ca: fs.readFileSync("./ca-certificate.crt").toString(),
     // },
+    // connectTimeoutMS: 10000,
   },
   paymentOptions: {
     paymentMethodHandlers: [dummyPaymentHandler],
@@ -131,7 +124,6 @@ export const config: VendureConfig = {
         name: "productDetails",
         type: "string",
         ui: { component: "rich-text-form-input" },
-
         length: 2000,
         label: [{ languageCode: LanguageCode.en, value: "Product Details" }],
         defaultValue: "",
@@ -150,7 +142,6 @@ export const config: VendureConfig = {
     ],
   },
   plugins: [
-    // AlertPlugin,
     AssetServerPlugin.init({
       route: "assets",
       assetUploadDir: !IS_DEV
@@ -178,9 +169,7 @@ export const config: VendureConfig = {
     }),
     DefaultJobQueuePlugin.init({ useDatabaseForBuffer: true }),
     DefaultSearchPlugin.init({ bufferUpdates: false }),
-
     // TODO: might be used later
-
     // EmailPlugin.init({
     //   devMode: true,
     //   outputPath: path.join(__dirname, "../static/email/test-emails"),
@@ -195,7 +184,6 @@ export const config: VendureConfig = {
     //       "http://localhost:3000/verify-email-address-change",
     //   },
     // }),
-
     EmailPlugin.init({
       handlers: defaultEmailHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
@@ -206,29 +194,27 @@ export const config: VendureConfig = {
         passwordResetUrl: `${process.env.SHOP_URL}/password-reset`,
         changeEmailAddressUrl: `${process.env.SHOP_URL}/verify-email-address-change`,
       },
-
       emailSender: new SendgridEmailSender(),
     }),
-
     AdminUiPlugin.init({
       route: "admin",
       port: 3002,
 
-      // app: compileUiExtensions({
-      //   outputPath: path.join(__dirname, "..", "admin-ui"),
-      //   extensions: [],
-      //   devMode: IS_DEV,
-      // }),
-      adminUiConfig: { apiPort: 3000 },
-      // ? {
-      //     apiPort: 3000,
-      //   }
-      // : {
-      //     apiPort: 443, // HTTPS port
-      //     apiHost: "https://alcosta.stixor.com",
+      app: compileUiExtensions({
+        outputPath: path.join(__dirname, "..", "admin-ui"),
+        extensions: [],
+        devMode: IS_DEV,
+      }),
+      adminUiConfig: IS_DEV
+        ? {
+            apiPort: 3000,
+          }
+        : {
+            apiPort: 443, // HTTPS port
+            apiHost: "https://alcosta.stixor.com",
 
-      //     adminApiPath: "admin-api",
-      //   },
+            adminApiPath: "admin-api",
+          },
     }),
   ],
 };
