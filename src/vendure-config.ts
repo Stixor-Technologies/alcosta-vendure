@@ -38,18 +38,25 @@ class SendgridEmailSender implements EmailSender {
   }
 }
 
+const ALLOWED_ORIGINS = {
+  LOCAL: "http://localhost:3000",
+  AMPLIFY_REGEX: /^https:\/\/[a-zA-Z0-9-]+\.djoxd2hz2b5tf\.amplifyapp\.com$/,
+};
+
 export const config: VendureConfig = {
   apiOptions: {
     cors: {
       origin: (origin, callback) => {
-        const regex =
-          /^https:\/\/[a-zA-Z0-9-]+\.djoxd2hz2b5tf\.amplifyapp\.com$/;
-        const allowedLocal = "http://localhost:3000";
-
-        if (!origin || origin === allowedLocal || regex.test(origin)) {
+        if (
+          !origin ||
+          origin === ALLOWED_ORIGINS.LOCAL ||
+          ALLOWED_ORIGINS.AMPLIFY_REGEX.test(origin)
+        ) {
           callback(null, true);
         } else {
-          console.log(`CORS rejected origin: ${origin}`);
+          if (IS_DEV) {
+            console.log(`CORS rejected origin: ${origin}`);
+          }
           callback(new Error("Not allowed by CORS"));
         }
       },
