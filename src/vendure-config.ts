@@ -41,23 +41,23 @@ class SendgridEmailSender implements EmailSender {
 export const config: VendureConfig = {
   apiOptions: {
     cors: {
-      origin: [
-        "http://localhost:3000",
-        "https://develop.djoxd2hz2b5tf.amplifyapp.com",
-        "https://feature-payment-gateway-finalization.djoxd2hz2b5tf.amplifyapp.com",
-        "https://feature-payment.djoxd2hz2b5tf.amplifyapp.com",
-      ],
+      origin: (origin, callback) => {
+        const regex =
+          /^https:\/\/[a-zA-Z0-9-]+\.djoxd2hz2b5tf\.amplifyapp\.com$/;
+        const allowedLocal = "http://localhost:3000";
+
+        if (!origin || origin === allowedLocal || regex.test(origin)) {
+          callback(null, true);
+        } else {
+          console.log(`CORS rejected origin: ${origin}`);
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
 
-    // cors: {
-    //   origin: "*",
-    //   credentials: true,
-    //   allowedHeaders: "*",
-    //   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    // },
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
