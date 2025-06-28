@@ -47,7 +47,7 @@ export const config: VendureConfig = {
   apiOptions: {
     cors: {
       origin: "*",
-      credentials: true,
+      credentials: false,
       allowedHeaders: "*",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
