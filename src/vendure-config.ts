@@ -46,25 +46,11 @@ const ALLOWED_ORIGINS = {
 export const config: VendureConfig = {
   apiOptions: {
     cors: {
-      origin: (origin, callback) => {
-        if (
-          !origin ||
-          origin === ALLOWED_ORIGINS.LOCAL ||
-          ALLOWED_ORIGINS.AMPLIFY_REGEX.test(origin)
-        ) {
-          callback(null, true);
-        } else {
-          if (IS_DEV) {
-            console.log(`CORS rejected origin: ${origin}`);
-          }
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
+      origin: "*",
       credentials: true,
-      allowedHeaders: ["Content-Type", "Authorization"],
+      allowedHeaders: "*",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     },
-
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
